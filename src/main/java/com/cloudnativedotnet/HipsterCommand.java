@@ -4,12 +4,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandProperties;
 
 public class HipsterCommand extends HystrixCommand<String> {
 	private int sleep;
 	
 	public HipsterCommand(int sleep) {
-		super(HystrixCommandGroupKey.Factory.asKey("HipsterGroup"));
+		super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("HipsterGroup")).
+				andCommandPropertiesDefaults(HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(3000)));
 		this.sleep = sleep;
 	}
 
